@@ -18,10 +18,10 @@ pipeline {
         dependencyCheckPublisher pattern: 'dependency-check-report.xml'
       }
         }
- stage('SonarQube analysis') {
-    def scannerHome = tool 'SonarScanner 5.0.1.3006';
-    withSonarQubeEnv('SonarQube') { // If you have configured more than one global server connection, you can specify its name
-      sh "${scannerHome}/bin/sonar-scanner"
+
+        stage('SonarQube analysis') {
+    withSonarQubeEnv(installationName: 'SonarQube') { // You can override the credential to be used
+      sh 'mvn org.sonarsource.scanner.maven:sonar-maven-plugin:3.9.6:sonar'
     }
   }
         
