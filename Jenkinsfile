@@ -1,5 +1,8 @@
 pipeline {
     agent any
+    tools{
+        maven 'maven'
+    }
 
     stages {
         stage('SCM') {
@@ -25,6 +28,13 @@ pipeline {
       sh 'mvn clean install sonar:sonar'
     }
   }
+        }
+        stage("Quality Gate"){
+            steps{
+                timeout(time: 2, unit: 'MINUTES'){
+                    waitForQualityGate abortPipeline :true
+                }
+            }
         }
         
 }
